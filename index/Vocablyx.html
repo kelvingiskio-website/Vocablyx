@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocablyx AI - Master English Easily</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Custom smooth 3D flip card animations */
+        .flashcard {
+            perspective: 1000px;
+        }
+        .flashcard-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- -->
+    <!-- Header Banner -->
+    <header class="bg-gradient-to-r from-brand-600 via-indigo-600 to-purple-600 text-white py-10 px-6 text-center relative overflow-hidden shadow-lg">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent)] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                    <span class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                        <i class="fa-solid fa-bolt text-yellow-300 text-2xl animate-pulse"></i>
+                    </span>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Vocablyx <span class="text-yellow-300 font-light text-xl md:text-2xl">AI</span></h1>
+                </div>
+                <!-- Controls: Dark Mode Toggle -->
+                <button id="theme-toggle" class="p-3 bg-white/10 hover:bg-white/20 active:scale-95 rounded-xl transition duration-200 backdrop-blur-md text-white" aria-label="Toggle dark mode">
+                    <i id="theme-toggle-icon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+            </div>
+            <p class="text-indigo-100 text-base md:text-lg max-w-xl mx-auto font-medium">Platform belajar Bahasa Inggris revolusioner ditenagai kecerdasan buatan, pelafalan audio realistik, & game edukatif.</p>
+        </div>
+    </header>
+
+    <!-- Navigation Menu (Sticky) -->
+    <nav class="sticky top-0 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-100 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300">
+        <div class="max-w-5xl mx-auto px-4 py-2 flex items-center justify-between overflow-x-auto gap-2">
+            <button onclick="switchTab('dashboard')" class="nav-btn active flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-semibold rounded-xl transition whitespace-nowrap bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-200">
+                <i class="fa-solid fa-house"></i> <span data-i18n="nav_home">Beranda</span>
+            </button>
+            <button onclick="switchTab('materi')" class="nav-btn flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition whitespace-nowrap">
+                <i class="fa-solid fa-book-open"></i> <span data-i18n="nav_materi">Materi & AI</span>
+            </button>
+            <button onclick="switchTab('flashcards')" class="nav-btn flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition whitespace-nowrap">
+                <i class="fa-solid fa-layer-group"></i> <span data-i18n="nav_flashcards">Flashcards</span>
+            </button>
+            <button onclick="switchTab('praktek')" class="nav-btn flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition whitespace-nowrap">
+                <i class="fa-solid fa-microphone"></i> <span data-i18n="nav_praktek">Praktek Bicara</span>
+            </button>
+            <button onclick="switchTab('kuis')" class="nav-btn flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition whitespace-nowrap">
+                <i class="fa-solid fa-circle-question"></i> <span data-i18n="nav_kuis">Kuis & Game</span>
+            </button>
+            <button onclick="switchTab('ai-companion')" class="nav-btn flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition whitespace-nowrap">
+                <i class="fa-solid fa-robot"></i> <span data-i18n="nav_ai">AI Voxy</span>
+            </button>
+            <button onclick="switchTab('settings-tab')" class="nav-btn flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition whitespace-nowrap">
+                <i class="fa-solid fa-gears"></i> <span data-i18n="nav_settings">Pengaturan</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- -->
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-6">
+
+        <!-- 1. TAB: DASHBOARD -->
+        <section id="dashboard" class="tab-content block animate-fade-in">
+            <div class="bg-gradient-to-br from-brand-50 to-indigo-50 dark:from-slate-800 dark:to-indigo-950/30 rounded-2xl p-6 md:p-8 border border-brand-100 dark:border-brand-900/30 shadow-sm relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-2xl font-bold text-indigo-900 dark:text-indigo-200 flex items-center gap-2">
+                        <span data-i18n="welcome_back">Welcome Back, Learner!</span> <i class="fa-solid fa-hand-wave text-yellow-500 animate-bounce"></i>
+                    </h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed" data-i18n="welcome_subtitle">
+                        Siap menguasai Bahasa Inggris hari ini? Cari tahu kata-kata baru, dengarkan pengucapan alami dari AI, dan uji hasil belajarmu dengan kuis seru kami.
+                    </p>
+
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center text-center">
+                            <i class="fa-solid fa-fire text-orange-500 text-2xl mb-2"></i>
+                            <span id="stat-streak" class="text-2xl font-extrabold text-slate-800 dark:text-white">1</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium" data-i18n="stat_streak">Hari Beruntun</span>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center text-center">
+                            <i class="fa-solid fa-trophy text-yellow-500 text-2xl mb-2"></i>
+                            <span id="stat-high-score" class="text-2xl font-extrabold text-slate-800 dark:text-white">0</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium" data-i18n="stat_highscore">Skor Tertinggi</span>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center text-center">
+                            <i class="fa-solid fa-microphone text-green-500 text-2xl mb-2"></i>
+                            <span id="stat-practice" class="text-2xl font-extrabold text-slate-800 dark:text-white">0</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium" data-i18n="stat_practice">Latihan Bicara</span>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center text-center">
+                            <i class="fa-solid fa-brain text-purple-500 text-2xl mb-2"></i>
+                            <span id="stat-current-level" class="text-lg font-extrabold text-slate-800 dark:text-white uppercase">Beginner</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium" data-i18n="stat_level">Level Belajar</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="mt-8 bg-white/80 dark:bg-slate-800/80 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <h3 class="font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-brand-500"></i> <span data-i18n="rec_title">Rekomendasi Belajar Hari Ini</span>
+                        </h3>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="switchTab('materi')" class="flex-1 text-left bg-brand-500 hover:bg-brand-600 text-white p-4 rounded-xl transition duration-200 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-sm" data-i18n="rec_ai">Belajar Kustomisasi AI</div>
+                                    <p class="text-xs text-brand-100 mt-1" data-i18n="rec_ai_desc">Buat modul belajar sesuai minat Anda secara instan!</p>
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-lg"></i>
+                            </button>
+                            <button onclick="switchTab('praktek')" class="flex-1 text-left bg-teal-600 hover:bg-teal-700 text-white p-4 rounded-xl transition duration-200 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-sm" data-i18n="rec_speak">Praktek Bicara</div>
+                                    <p class="text-xs text-teal-100 mt-1" data-i18n="rec_speak_desc">Uji keakuratan pronunsiasi Anda sekarang.</p>
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- 2. TAB: MATERI & AI GENERATOR -->
+        <section id="materi" class="tab-content hidden animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-700">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-brand-500"></i> Modul Pembelajaran
+                        </h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Pilih materi yang sudah ada atau ciptakan materi buatan AI pilihanmu sendiri.</p>
+                    </div>
+                    <!-- Module Selectors -->
+                    <div class="flex gap-2 overflow-x-auto pb-1">
+                        <button id="btn-mod1" onclick="selectLesson('modul1')" class="lesson-btn active px-4 py-2 text-xs font-bold rounded-lg transition bg-brand-500 text-white shadow-sm">Greetings</button>
+                        <button id="btn-mod2" onclick="selectLesson('modul2')" class="lesson-btn px-4 py-2 text-xs font-bold rounded-lg transition bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200">Conversation</button>
+                        <button id="btn-mod3" onclick="selectLesson('modul3')" class="lesson-btn px-4 py-2 text-xs font-bold rounded-lg transition bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200">Verbs</button>
+                        <button id="btn-mod-ai" onclick="selectLesson('modul-ai')" class="lesson-btn px-4 py-2 text-xs font-bold rounded-lg transition bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 flex items-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Custom
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modul 1 Content -->
+                <div id="modul1" class="lesson-section mt-6 block">
+                    <h3 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Kata Sapaan Dasar (Greetings)</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Materi dasar untuk menyapa teman, kolega, atau orang baru.</p>
+                    <div class="grid gap-3">
+                        <div class="vocab-row flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:translate-x-1 transition duration-200">
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500">Greetings</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">Good morning</div>
+                                <div class="text-sm text-slate-500 dark:text-slate-400">Selamat pagi</div>
+                            </div>
+                            <button onclick="playTTS('Good morning')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="vocab-row flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:translate-x-1 transition duration-200">
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500">Greetings</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">Good afternoon</div>
+                                <div class="text-sm text-slate-500 dark:text-slate-400">Selamat siang/sore</div>
+                            </div>
+                            <button onclick="playTTS('Good afternoon')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="vocab-row flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:translate-x-1 transition duration-200">
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500">Greetings</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">Nice to meet you</div>
+                                <div class="text-sm text-slate-500 dark:text-slate-400">Senang bertemu denganmu</div>
+                            </div>
+                            <button onclick="playTTS('Nice to meet you')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modul 2 Content -->
+                <div id="modul2" class="lesson-section mt-6 hidden">
+                    <h3 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Percakapan Sehari-hari (Conversation)</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Kosakata dan frasa krusial yang digunakan dalam percakapan umum.</p>
+                    <div class="grid gap-3">
+                        <div class="vocab-row flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:translate-x-1 transition duration-200">
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500">Daily</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">How are you?</div>
+                                <div class="text-sm text-slate-500 dark:text-slate-400">Apa kabarmu?</div>
+                            </div>
+                            <button onclick="playTTS('How are you?')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="vocab-row flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:translate-x-1 transition duration-200">
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500">Daily</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">Thank you so much</div>
+                                <div class="text-sm text-slate-500 dark:text-slate-400">Terima kasih banyak</div>
+                            </div>
+                            <button onclick="playTTS('Thank you so much')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modul 3 Content -->
+                <div id="modul3" class="lesson-section mt-6 hidden">
+                    <h3 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Kata Kerja Esensial (Verbs)</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Kata kerja mendasar untuk mengekspresikan tindakan sehari-hari.</p>
+                    <div class="grid gap-3">
+                        <div class="vocab-row flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:translate-x-1 transition duration-200">
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500">Verb</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">To learn</div>
+                                <div class="text-sm text-slate-500 dark:text-slate-400">Belajar</div>
+                            </div>
+                            <button onclick="playTTS('To learn')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="vocab-row flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:translate-x-1 transition duration-200">
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500">Verb</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">To speak</div>
+                                <div class="text-sm text-slate-500 dark:text-slate-400">Berbicara</div>
+                            </div>
+                            <button onclick="playTTS('To speak')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modul AI Content -->
+                <div id="modul-ai" class="lesson-section mt-6 hidden">
+                    <h3 class="font-bold text-lg text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
+                        <i class="fa-solid fa-wand-magic-sparkles text-brand-500 animate-pulse"></i> AI Custom Vocab Generator
+                    </h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Tuliskan topik apa saja yang ingin Anda pelajari secara instan (misal: "Bandara", "Wawancara", "Restoran"). AI Vocablyx akan menyusun daftar khusus untuk Anda.</p>
+
+                    <!-- Input Generator -->
+                    <div class="flex flex-col sm:flex-row gap-2 mb-6">
+                        <input id="ai-topic-input" type="text" placeholder="Masukkan topik, misal: Kedokteran, Bandara, Coding..." class="flex-grow px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none text-sm transition">
+                        <button onclick="generateCustomVocabulary()" class="px-5 py-3 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold text-sm rounded-xl transition duration-150 shadow-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cog animate-spin hidden" id="ai-gen-spinner"></i>
+                            <span>Generate Kosakata</span>
+                        </button>
+                    </div>
+
+                    <!-- Output Area -->
+                    <div id="ai-vocab-loading" class="hidden text-center py-8">
+                        <i class="fa-solid fa-circle-notch text-brand-500 text-3xl animate-spin"></i>
+                        <p class="text-xs text-slate-500 mt-2">Menghubungi AI Vocablyx untuk menyusun modul terbaik...</p>
+                    </div>
+
+                    <div id="ai-vocab-container" class="grid gap-3">
+                        <div class="text-center py-8 text-slate-400 dark:text-slate-500 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl">
+                            <i class="fa-solid fa-wand-magic-sparkles text-3xl mb-2"></i>
+                            <p class="text-sm">Belum ada topik yang digenerate. Silakan ketik topik di atas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- 3. TAB: SMART FLASHCARDS -->
+        <section id="flashcards" class="tab-content hidden animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-layer-group text-brand-500"></i> Smart Flashcards
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Ketuk kartu di bawah ini untuk melihat arti kata dan dengarkan pengucapan yang benar.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Card 1 -->
+                    <div class="flashcard h-44 cursor-pointer" onclick="toggleFlip(this)">
+                        <div class="flashcard-inner w-full h-full relative rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+                            <div class="flashcard-front absolute inset-0 w-full h-full bg-slate-50 dark:bg-slate-900 rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Vocabulary</span>
+                                <h3 class="text-xl font-bold text-brand-600 dark:text-brand-300">Excuse me</h3>
+                                <span class="text-xs text-slate-400">Ketuk untuk Arti</span>
+                            </div>
+                            <div class="flashcard-back absolute inset-0 w-full h-full bg-gradient-to-br from-brand-500 to-indigo-600 text-white rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-brand-100 uppercase tracking-widest font-semibold">Artinya</span>
+                                <h4 class="text-xl font-bold">Permisi</h4>
+                                <div class="flex gap-2">
+                                    <button onclick="event.stopPropagation(); playTTS('Excuse me')" class="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white transition" title="Dengar">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="flashcard h-44 cursor-pointer" onclick="toggleFlip(this)">
+                        <div class="flashcard-inner w-full h-full relative rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+                            <div class="flashcard-front absolute inset-0 w-full h-full bg-slate-50 dark:bg-slate-900 rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Vocabulary</span>
+                                <h3 class="text-xl font-bold text-brand-600 dark:text-brand-300">You're welcome</h3>
+                                <span class="text-xs text-slate-400">Ketuk untuk Arti</span>
+                            </div>
+                            <div class="flashcard-back absolute inset-0 w-full h-full bg-gradient-to-br from-brand-500 to-indigo-600 text-white rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-brand-100 uppercase tracking-widest font-semibold">Artinya</span>
+                                <h4 class="text-xl font-bold">Sama-sama</h4>
+                                <div class="flex gap-2">
+                                    <button onclick="event.stopPropagation(); playTTS('You are welcome')" class="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white transition" title="Dengar">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="flashcard h-44 cursor-pointer" onclick="toggleFlip(this)">
+                        <div class="flashcard-inner w-full h-full relative rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+                            <div class="flashcard-front absolute inset-0 w-full h-full bg-slate-50 dark:bg-slate-900 rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Vocabulary</span>
+                                <h3 class="text-xl font-bold text-brand-600 dark:text-brand-300">See you later</h3>
+                                <span class="text-xs text-slate-400">Ketuk untuk Arti</span>
+                            </div>
+                            <div class="flashcard-back absolute inset-0 w-full h-full bg-gradient-to-br from-brand-500 to-indigo-600 text-white rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-brand-100 uppercase tracking-widest font-semibold">Artinya</span>
+                                <h4 class="text-xl font-bold">Sampai jumpa nanti</h4>
+                                <div class="flex gap-2">
+                                    <button onclick="event.stopPropagation(); playTTS('See you later')" class="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white transition" title="Dengar">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="flashcard h-44 cursor-pointer" onclick="toggleFlip(this)">
+                        <div class="flashcard-inner w-full h-full relative rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+                            <div class="flashcard-front absolute inset-0 w-full h-full bg-slate-50 dark:bg-slate-900 rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Vocabulary</span>
+                                <h3 class="text-xl font-bold text-brand-600 dark:text-brand-300">I'm sorry</h3>
+                                <span class="text-xs text-slate-400">Ketuk untuk Arti</span>
+                            </div>
+                            <div class="flashcard-back absolute inset-0 w-full h-full bg-gradient-to-br from-brand-500 to-indigo-600 text-white rounded-xl p-6 flex flex-col justify-between items-center text-center">
+                                <span class="text-xs text-brand-100 uppercase tracking-widest font-semibold">Artinya</span>
+                                <h4 class="text-xl font-bold">Saya minta maaf</h4>
+                                <div class="flex gap-2">
+                                    <button onclick="event.stopPropagation(); playTTS('I am sorry')" class="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white transition" title="Dengar">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- 4. TAB: PRAKTEK BICARA -->
+        <section id="praktek" class="tab-content hidden animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-microphone text-brand-500"></i> Latihan Pelafalan Interaktif
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Pilih salah satu kata atau tulis kata kustom, ketuk tombol mikrofon, lalu ucapkan kata tersebut dengan jelas. AI akan menilai pelafalanmu!</p>
+
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 text-center flex flex-col items-center">
+                    <span class="text-xs text-slate-400 uppercase font-bold tracking-widest">Target Kata</span>
+                    <!-- Selection of target words -->
+                    <div class="flex flex-wrap gap-2 justify-center mt-3 max-w-lg">
+                        <button onclick="setSpeakTarget('Good morning')" class="target-word-btn px-4 py-2 bg-brand-500 text-white rounded-lg text-sm font-semibold hover:bg-brand-600 transition shadow-sm border border-brand-500">Good morning</button>
+                        <button onclick="setSpeakTarget('Thank you')" class="target-word-btn px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700">Thank you</button>
+                        <button onclick="setSpeakTarget('Excuse me')" class="target-word-btn px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700">Excuse me</button>
+                        <button onclick="setSpeakTarget('You are welcome')" class="target-word-btn px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-700 transition border border-slate-200 dark:border-slate-700">You are welcome</button>
+                    </div>
+
+                    <!-- Custom input target word -->
+                    <div class="mt-4 flex gap-2 w-full max-w-sm">
+                        <input id="custom-speak-word" type="text" placeholder="Tulis kata Anda sendiri..." class="flex-grow px-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-1 focus:ring-brand-500 outline-none">
+                        <button onclick="setCustomSpeakTarget()" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl text-xs font-bold transition">Pasang Kata</button>
+                    </div>
+
+                    <!-- Selected target -->
+                    <h3 id="target-display" class="text-3xl font-extrabold text-slate-800 dark:text-white mt-8 tracking-tight">Good morning</h3>
+                    <button onclick="playTTS(document.getElementById('target-display').innerText)" class="mt-2 text-xs text-brand-500 font-semibold flex items-center gap-1 hover:underline">
+                        <i class="fa-solid fa-volume-high"></i> Contoh Suara AI
+                    </button>
+
+                    <!-- Recording Circle -->
+                    <div class="mt-8 relative">
+                        <button id="mic-btn" onclick="toggleSpeechRecognition()" class="w-24 h-24 bg-gradient-to-r from-brand-500 to-indigo-600 hover:scale-105 active:scale-95 transition rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
+                            <i id="mic-icon" class="fa-solid fa-microphone text-3xl"></i>
+                        </button>
+                        <div id="mic-pulse" class="absolute inset-0 bg-brand-500/30 rounded-full animate-ping hidden"></div>
+                    </div>
+
+                    <p id="mic-status" class="text-xs text-slate-500 dark:text-slate-400 mt-4 font-semibold">Ketuk mikrofon untuk mulai berbicara</p>
+
+                    <!-- Feedback block -->
+                    <div id="speech-result-box" class="mt-8 w-full max-w-md hidden p-4 rounded-xl border">
+                        <div class="text-xs text-slate-400 uppercase font-bold">Hasil Pengucapan Anda</div>
+                        <div id="heard-word" class="text-xl font-bold mt-1 text-slate-800 dark:text-white">...</div>
+                        <div class="flex items-center justify-center gap-2 mt-4">
+                            <span id="speech-score-badge" class="px-3 py-1 rounded-full text-xs font-bold text-white">95% Match</span>
+                            <span id="speech-feedback-text" class="text-sm font-semibold">Luar biasa!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- 5. TAB: KUIS & GAME -->
+        <section id="kuis" class="tab-content hidden animate-fade-in">
+            <!-- Selector Kuis atau Game -->
+            <div class="flex gap-4 mb-6">
+                <button id="btn-subtab-quiz" onclick="switchKuisSubTab('quiz')" class="flex-1 py-3 text-center rounded-xl font-bold text-sm bg-brand-500 text-white shadow-sm border border-brand-500 transition">
+                    <i class="fa-solid fa-gamepad mr-2"></i> Kuis Utama
+                </button>
+                <button id="btn-subtab-scramble" onclick="switchKuisSubTab('scramble')" class="flex-1 py-3 text-center rounded-xl font-bold text-sm bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-puzzle-piece mr-2"></i> Susun Kata (Scramble)
+                </button>
+            </div>
+
+            <!-- Subtab Kuis Utama -->
+            <div id="kuis-quiz-area" class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm block">
+                <div id="quiz-active-area">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-circle-question text-brand-500"></i> Uji Kemampuanmu
+                        </h2>
+                        <span id="question-counter" class="text-xs md:text-sm font-bold text-brand-600 dark:text-brand-300">Soal 1 dari 5</span>
+                    </div>
+
+                    <div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden mb-6">
+                        <div id="quiz-progress" class="bg-gradient-to-r from-brand-500 to-indigo-600 h-full rounded-full transition-all duration-300" style="width: 20%"></div>
+                    </div>
+
+                    <div id="question-text" class="text-base md:text-lg font-bold text-slate-800 dark:text-white mb-6">
+                        Loading...
+                    </div>
+
+                    <div id="options-container" class="grid gap-3">
+                        <!-- Dynamic choices -->
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button id="btn-next" onclick="nextQuestion()" class="hidden px-5 py-3 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold rounded-xl text-sm transition flex items-center gap-2 shadow-md">
+                            <span>Selanjutnya</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hasil Akhir Kuis -->
+                <div id="quiz-result-area" class="hidden text-center py-8">
+                    <div class="w-20 h-20 bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-300 rounded-full flex items-center justify-center mx-auto text-4xl mb-4">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Hasil Kuis Anda</h2>
+                    <p class="text-sm text-slate-400 mt-1">Skor Anda telah berhasil dihitung!</p>
+                    <div id="final-score" class="text-6xl font-extrabold text-brand-600 dark:text-brand-400 my-6">0</div>
+                    <p id="result-feedback" class="text-sm max-w-md mx-auto text-slate-500 dark:text-slate-400 font-medium">Keren sekali! Pertahankan belajarmu.</p>
+
+                    <button onclick="restartQuiz()" class="mt-8 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm transition shadow-md flex items-center gap-2 mx-auto active:scale-95">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Ulangi Kuis</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Subtab Game Susun Kata (Scramble) -->
+            <div id="kuis-scramble-area" class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hidden">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-puzzle-piece text-brand-500 animate-pulse"></i> Game Susun Huruf (Word Scramble)
+                </h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Susun kembali huruf-huruf acak di bawah ini menjadi kata bahasa Inggris yang benar!</p>
+
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 text-center">
+                    <span class="text-xs text-slate-400 uppercase font-bold tracking-widest">Petunjuk Arti</span>
+                    <h3 id="scramble-clue" class="text-lg font-bold text-indigo-600 dark:text-indigo-400 mt-1">Mengajar</h3>
+
+                    <!-- Letters Grid -->
+                    <div id="scramble-letters-container" class="flex flex-wrap gap-2 justify-center mt-6">
+                        <!-- Shuffled letters dynamic -->
+                    </div>
+
+                    <!-- Input Word -->
+                    <div class="mt-8 max-w-sm mx-auto">
+                        <input id="scramble-input" type="text" placeholder="Ketik susunan kata Anda di sini..." class="w-full px-4 py-3 text-center font-bold tracking-wide uppercase text-lg rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+
+                    <div class="flex justify-center gap-3 mt-6">
+                        <button onclick="resetScrambleAnswer()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs transition">Hapus</button>
+                        <button onclick="checkScrambleAnswer()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs transition shadow-sm active:scale-95">Periksa Jawaban</button>
+                    </div>
+
+                    <div id="scramble-feedback-box" class="mt-6 text-center text-sm font-semibold hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -->
+        <!-- 6. TAB: AI VOXY COMPANION -->
+        <section id="ai-companion" class="tab-content hidden animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col h-[550px]">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-brand-500 text-white rounded-xl flex items-center justify-center text-lg shadow-sm">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-slate-800 dark:text-white">AI Companion: Voxy</h2>
+                            <p class="text-[10px] text-emerald-500 flex items-center gap-1 font-semibold">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> Online
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Clear Chat button -->
+                    <button onclick="clearChatHistory()" class="text-xs text-slate-400 hover:text-red-500 font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-trash"></i> Bersihkan Chat
+                    </button>
+                </div>
+
+                <!-- Chat Box Area -->
+                <div id="chat-messages" class="flex-grow overflow-y-auto py-4 space-y-4 px-1 scrollbar-thin scrollbar-thumb-slate-300">
+                    <!-- Default Greeting -->
+                    <div class="flex items-start gap-2 max-w-[85%]">
+                        <div class="w-8 h-8 bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-300 rounded-lg flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-900 p-3 rounded-2xl text-sm leading-relaxed text-slate-800 dark:text-slate-200">
+                            Hello! Aku **Voxy**, tutor bahasa Inggris AI pribadimu. Kamu bisa bertanya soal tata bahasa, meminta terjemahan, atau sekadar latihan mengobrol denganku. 
+                            <br><br>
+                            *Yuk coba ketik sesuatu di bawah ini atau tanyakan arti kata tertentu!*
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Chat -->
+                <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 flex gap-2">
+                    <input id="chat-input" onkeypress="handleChatKeyPress(event)" type="text" placeholder="Tanyakan apa saja kepada Voxy..." class="flex-grow px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 focus:ring-2 focus:ring-brand-500 outline-none text-sm transition">
+                    <button onclick="sendMessageToVoxy()" class="px-5 py-3 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white rounded-xl font-bold text-sm transition flex items-center justify-center shadow-md">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. TAB: SETTINGS & PREFERENCES -->
+        <section id="settings-tab" class="tab-content hidden animate-fade-in">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-gears text-brand-500"></i> <span data-i18n="settings_title">Pengaturan Aplikasi</span>
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6" data-i18n="settings_subtitle">Sesuaikan bahasa antarmuka, pengisi suara AI, dan tingkat kesulitan belajar Anda.</p>
+
+                <div class="space-y-6">
+                    <!-- Language Selection -->
+                    <div class="border-b border-slate-100 dark:border-slate-700 pb-4">
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-3" data-i18n="settings_label_lang">Bahasa Antarmuka (Interface Language)</label>
+                        <div class="flex gap-3">
+                            <button onclick="setAppLanguage('id')" id="lang-btn-id" class="flex-1 py-3 px-4 rounded-xl font-semibold border flex items-center justify-center gap-2 transition duration-200">
+                                🇮🇩 Bahasa Indonesia
+                            </button>
+                            <button onclick="setAppLanguage('en')" id="lang-btn-en" class="flex-1 py-3 px-4 rounded-xl font-semibold border flex items-center justify-center gap-2 transition duration-200">
+                                🇺🇸 English
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Learning Difficulty Level -->
+                    <div class="border-b border-slate-100 dark:border-slate-700 pb-4">
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2" data-i18n="settings_label_level">Tingkat Kemampuan Belajar (Difficulty Level)</label>
+                        <select id="level-select" onchange="saveLevelSettings()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 focus:ring-2 focus:ring-brand-500 outline-none text-sm transition text-slate-700 dark:text-slate-300">
+                            <option value="beginner" data-i18n="lvl_beg">Beginner (Pemula - Kosa Kata & Frasa Sederhana)</option>
+                            <option value="intermediate" data-i18n="lvl_int">Intermediate (Menengah - Percakapan Sehari-hari)</option>
+                            <option value="advanced" data-i18n="lvl_adv">Advanced (Mahir - Diskusi & Kosakata Kompleks)</option>
+                        </select>
+                    </div>
+
+                    <!-- AI Voice Configuration -->
+                    <div class="border-b border-slate-100 dark:border-slate-700 pb-4">
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2" data-i18n="settings_label_voice">Pengisi Suara Tutor AI (TTS Voice)</label>
+                        <select id="voice-select" onchange="saveVoiceSettings()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 focus:ring-2 focus:ring-brand-500 outline-none text-sm transition text-slate-700 dark:text-slate-300">
+                            <option value="Zephyr">Zephyr (Bright / Ceria)</option>
+                            <option value="Puck">Puck (Upbeat / Bersemangat)</option>
+                            <option value="Charon">Charon (Informative / Tenang)</option>
+                            <option value="Kore">Kore (Firm / Tegas)</option>
+                            <option value="Fenrir">Fenrir (Excitable / Antusias)</option>
+                            <option value="Leda">Leda (Youthful / Muda)</option>
+                        </select>
+                    </div>
+
+                    <!-- API Key Custom Setting -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-1" data-i18n="settings_label_apikey">Custom Gemini API Key (Opsional)</label>
+                        <p class="text-xs text-slate-400 mb-2" data-i18n="settings_apikey_desc">Gunakan API Key Anda sendiri jika kuota gratis bawaan habis.</p>
+                        <div class="flex gap-2">
+                            <input id="custom-apikey-input" type="password" placeholder="AIzaSy..." class="flex-grow px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 focus:ring-2 focus:ring-brand-500 outline-none text-sm transition text-slate-700 dark:text-slate-300">
+                            <button onclick="saveApiKeySettings()" class="px-5 py-3 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold text-sm rounded-xl transition shadow-sm" data-i18n="btn_save">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- -->
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700 py-6 text-center text-slate-400 dark:text-slate-500 text-xs md:text-sm mt-auto transition-colors duration-300">
+        <p>&copy; 2026 Vocablyx AI. Belajar Bahasa Inggris Menjadi Jauh Lebih Seru & Pintar.</p>
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        /* */
+        // Configuration & States
+        const apiKey = ""; // Canvas runtime handles key injection dynamically
+
+        const translations = {
+            id: {
+                nav_home: "Beranda",
+                nav_materi: "Materi & AI",
+                nav_flashcards: "Flashcards",
+                nav_praktek: "Praktek Bicara",
+                nav_kuis: "Kuis & Game",
+                nav_ai: "AI Voxy",
+                nav_settings: "Pengaturan",
+                welcome_back: "Selamat Datang Kembali, Pelajar!",
+                welcome_subtitle: "Siap menguasai Bahasa Inggris hari ini? Cari tahu kata-kata baru, dengarkan pengucapan alami dari AI, dan uji hasil belajarmu dengan kuis seru kami.",
+                stat_streak: "Hari Beruntun",
+                stat_highscore: "Skor Tertinggi",
+                stat_practice: "Latihan Bicara",
+                stat_level: "Level Belajar",
+                rec_title: "Rekomendasi Belajar Hari Ini",
+                rec_ai: "Belajar Kustomisasi AI",
+                rec_ai_desc: "Buat modul belajar sesuai minat Anda secara instan!",
+                rec_speak: "Praktek Bicara",
+                rec_speak_desc: "Uji keakuratan pronunsiasi Anda sekarang.",
+                settings_title: "Pengaturan Aplikasi",
+                settings_subtitle: "Sesuaikan bahasa antarmuka, pengisi suara AI, dan tingkat kesulitan belajar Anda.",
+                settings_label_lang: "Bahasa Antarmuka (Interface Language)",
+                settings_label_level: "Tingkat Kemampuan Belajar (Difficulty Level)",
+                settings_label_voice: "Pengisi Suara Tutor AI (TTS Voice)",
+                settings_label_apikey: "Custom Gemini API Key (Opsional)",
+                settings_apikey_desc: "Gunakan API Key Anda sendiri jika kuota gratis bawaan habis atau belum terdaftar.",
+                btn_save: "Simpan",
+                lvl_beg: "Beginner (Pemula - Kosa Kata & Frasa Sederhana)",
+                lvl_int: "Intermediate (Menengah - Percakapan Sehari-hari)",
+                lvl_adv: "Advanced (Mahir - Diskusi & Kosakata Kompleks)"
+            },
+            en: {
+                nav_home: "Home",
+                nav_materi: "Lessons & AI",
+                nav_flashcards: "Flashcards",
+                nav_praktek: "Speaking Practice",
+                nav_kuis: "Quiz & Game",
+                nav_ai: "AI Voxy",
+                nav_settings: "Settings",
+                welcome_back: "Welcome Back, Learner!",
+                welcome_subtitle: "Ready to master English today? Discover new words, listen to native AI pronunciations, and test your knowledge with our exciting quizzes.",
+                stat_streak: "Day Streak",
+                stat_highscore: "High Score",
+                stat_practice: "Speaking Practices",
+                stat_level: "Learning Level",
+                rec_title: "Today's Learning Recommendation",
+                rec_ai: "Custom AI Learning",
+                rec_ai_desc: "Instantly build customized learning modules based on your interests!",
+                rec_speak: "Speaking Practice",
+                rec_speak_desc: "Test your pronunciation accuracy right now.",
+                settings_title: "App Settings",
+                settings_subtitle: "Customize your interface language, AI voice options, and target learning difficulty level.",
+                settings_label_lang: "Interface Language",
+                settings_label_level: "Target Learning Difficulty Level",
+                settings_label_voice: "AI Tutor TTS Voice Model",
+                settings_label_apikey: "Custom Gemini API Key (Optional)",
+                settings_apikey_desc: "Input your personal API Key if the default free quota gets exhausted.",
+                btn_save: "Save",
+                lvl_beg: "Beginner (Simple Vocabulary & Phrases)",
+                lvl_int: "Intermediate (Everyday Conversations)",
+                lvl_adv: "Advanced (Complex Discussions & Vocabulary)"
+            }
+        };
+
+        const quizData = [
+            {
+                question: "Bagaimana cara menyapa seseorang di jam 8 pagi?",
+                options: ["Good afternoon", "Good morning", "Good evening", "Good night"],
+                correct: 1
+            },
+            {
+                question: "Apa terjemahan bahasa Indonesia dari ungkapan 'Nice to meet you'?",
+                options: ["Sampai jumpa besok", "Bagaimana kabar Anda?", "Senang bertemu denganmu", "Terima kasih banyak"],
+                correct: 2
+            },
+            {
+                question: "Sapaan apa yang diucapkan di jam 2 siang?",
+                options: ["Good afternoon", "Good morning", "Good evening", "Good night"],
+                correct: 0
+            },
+            {
+                question: "Jika seseorang membantumu, jawaban apa yang paling sopan?",
+                options: ["Excuse me", "Nice to meet you", "Goodbye", "Thank you so much"],
+                correct: 3
+            },
+            {
+                question: "Apa bahasa Inggris dari kata kerja 'Menulis'?",
+                options: ["To write", "To learn", "To listen", "To speak"],
+                correct: 0
+            }
+        ];
+
+        const scrambleWords = [
+            { word: "TEACHER", clue: "Seorang pengajar di sekolah" },
+            { word: "LEARNING", clue: "Proses memperoleh pemahaman baru" },
+            { word: "ENGLISH", clue: "Bahasa internasional utama dunia" },
+            { word: "VOCABULARY", clue: "Daftar perbendaharaan kata" },
+            { word: "CONVERSATION", clue: "Bincang-bincang santai antar dua orang" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOptionThisQuestion = false;
+        let highestScore = 0;
+        let streak = 1;
+        let speakCount = 0;
+
+        let appLanguage = localStorage.getItem('vocablyx_lang') || 'id';
+        let learningLevel = localStorage.getItem('vocablyx_level') || 'beginner';
+        let aiVoice = localStorage.getItem('vocablyx_voice') || 'Zephyr';
+        let customApiKey = localStorage.getItem('vocablyx_apikey') || '';
+
+        // Scramble state
+        let currentScrambleIndex = 0;
+        let currentScrambleWordObj = {};
+        let shuffledWord = "";
+
+        // Chat History for Voxy (System Instruction already embedded)
+        let voxyChatHistory = [];
+
+        /* */
+        window.onload = function() {
+            initApp();
+        };
+
+        function initApp() {
+            // Load theme
+            if (localStorage.getItem('vocablyx-theme') === 'dark' || 
+                (!('vocablyx-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-toggle-icon').className = 'fa-solid fa-sun text-lg';
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('theme-toggle-icon').className = 'fa-solid fa-moon text-lg';
+            }
+
+            // Dark Mode switch handler
+            document.getElementById('theme-toggle').onclick = function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('vocablyx-theme', 'light');
+                    document.getElementById('theme-toggle-icon').className = 'fa-solid fa-moon text-lg';
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('vocablyx-theme', 'dark');
+                    document.getElementById('theme-toggle-icon').className = 'fa-solid fa-sun text-lg';
+                }
+            };
+
+            // Restoring API Key setting input
+            document.getElementById('custom-apikey-input').value = customApiKey;
+
+            // Restoring selects in Settings tab
+            document.getElementById('level-select').value = learningLevel;
+            document.getElementById('voice-select').value = aiVoice;
+
+            // Update app visual language
+            applyLanguageSettings(appLanguage);
+            updateLevelBadge();
+
+            // Load saved stats
+            const savedHighScore = localStorage.getItem('vocablyx_highscore');
+            if (savedHighScore) {
+                highestScore = parseInt(savedHighScore);
+                document.getElementById('stat-high-score').textContent = highestScore;
+            }
+
+            const savedStreak = localStorage.getItem('vocablyx_streak');
+            if (savedStreak) {
+                streak = parseInt(savedStreak);
+                document.getElementById('stat-streak').textContent = streak;
+            }
+
+            const savedPractice = localStorage.getItem('vocablyx_practice');
+            if (savedPractice) {
+                speakCount = parseInt(savedPractice);
+                document.getElementById('stat-practice').textContent = speakCount;
+            }
+
+            loadQuestion();
+            loadScrambleGame();
+        }
+
+        // Switch Language function
+        function setAppLanguage(lang) {
+            appLanguage = lang;
+            localStorage.setItem('vocablyx_lang', lang);
+            applyLanguageSettings(lang);
+        }
+
+        function applyLanguageSettings(lang) {
+            // Apply language active styles to language buttons
+            const btnId = document.getElementById('lang-btn-id');
+            const btnEn = document.getElementById('lang-btn-en');
+
+            if (lang === 'id') {
+                btnId.className = "flex-1 py-3 px-4 rounded-xl font-bold bg-brand-500 text-white border-brand-500 shadow-md flex items-center justify-center gap-2 transition duration-200";
+                btnEn.className = "flex-1 py-3 px-4 rounded-xl font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center gap-2 transition duration-200";
+            } else {
+                btnEn.className = "flex-1 py-3 px-4 rounded-xl font-bold bg-brand-500 text-white border-brand-500 shadow-md flex items-center justify-center gap-2 transition duration-200";
+                btnId.className = "flex-1 py-3 px-4 rounded-xl font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center gap-2 transition duration-200";
+            }
+
+            // Loop through translating tags
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Specific UI element updates
+            const inputTopic = document.getElementById('ai-topic-input');
+            if (inputTopic) {
+                inputTopic.placeholder = lang === 'id' ? 'Masukkan topik, misal: Kedokteran, Bandara...' : 'Enter topic, e.g., Medicine, Airport...';
+            }
+        }
+
+        // Difficulty Level settings saving
+        function saveLevelSettings() {
+            learningLevel = document.getElementById('level-select').value;
+            localStorage.setItem('vocablyx_level', learningLevel);
+            updateLevelBadge();
+        }
+
+        function updateLevelBadge() {
+            const badge = document.getElementById('stat-current-level');
+            if (badge) {
+                badge.innerText = learningLevel;
+            }
+        }
+
+        // Voice Settings saving
+        function saveVoiceSettings() {
+            aiVoice = document.getElementById('voice-select').value;
+            localStorage.setItem('vocablyx_voice', aiVoice);
+        }
+
+        // Custom API key saving
+        function saveApiKeySettings() {
+            customApiKey = document.getElementById('custom-apikey-input').value.trim();
+            localStorage.setItem('vocablyx_apikey', customApiKey);
+            alert(appLanguage === 'id' ? "Konfigurasi API Key berhasil disimpan!" : "API Key configuration saved successfully!");
+        }
+
+        // Dynamic API Key Getter
+        function getEffectiveApiKey() {
+            return customApiKey ? customApiKey : apiKey;
+        }
+
+        /* */
+        function switchTab(tabId) {
+            // Hide all tab sections
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('block');
+            });
+
+            // Show active tab
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) {
+                activeTab.classList.remove('hidden');
+                activeTab.classList.add('block');
+            }
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-brand-50', 'text-brand-600', 'dark:bg-brand-900/40', 'dark:text-brand-200');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700/50');
+            });
+
+            // Find current button
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-brand-50', 'text-brand-600', 'dark:bg-brand-900/40', 'dark:text-brand-200');
+                activeBtn.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700/50');
+            }
+        }
+
+        // Sub-tabs in Lesson (Modul)
+        function selectLesson(sectionId) {
+            document.querySelectorAll('.lesson-section').forEach(sect => {
+                sect.classList.add('hidden');
+                sect.classList.remove('block');
+            });
+
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                targetSection.classList.add('block');
+            }
+
+            // Toggle active styles on buttons
+            document.querySelectorAll('.lesson-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-brand-500', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-slate-100', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-200');
+            });
+
+            const activeBtn = document.getElementById('btn-' + (sectionId === 'modul-ai' ? 'mod-ai' : sectionId === 'modul1' ? 'mod1' : sectionId === 'modul2' ? 'mod2' : 'mod3'));
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-brand-500', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('bg-slate-100', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-200');
+            }
+        }
+
+        // Switch Kuis Subtabs
+        function switchKuisSubTab(subType) {
+            const btnQuiz = document.getElementById('btn-subtab-quiz');
+            const btnScramble = document.getElementById('btn-subtab-scramble');
+            const areaQuiz = document.getElementById('kuis-quiz-area');
+            const areaScramble = document.getElementById('kuis-scramble-area');
+
+            if (subType === 'quiz') {
+                btnQuiz.className = "flex-1 py-3 text-center rounded-xl font-bold text-sm bg-brand-500 text-white shadow-sm border border-brand-500 transition";
+                btnScramble.className = "flex-1 py-3 text-center rounded-xl font-bold text-sm bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition";
+                areaQuiz.classList.remove('hidden');
+                areaQuiz.classList.add('block');
+                areaScramble.classList.add('hidden');
+            } else {
+                btnScramble.className = "flex-1 py-3 text-center rounded-xl font-bold text-sm bg-brand-500 text-white shadow-sm border border-brand-500 transition";
+                btnQuiz.className = "flex-1 py-3 text-center rounded-xl font-bold text-sm bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition";
+                areaScramble.classList.remove('hidden');
+                areaScramble.classList.add('block');
+                areaQuiz.classList.add('hidden');
+            }
+        }
+
+        // Toggle Flashcards Flip effect
+        function toggleFlip(card) {
+            card.classList.toggle('flipped');
+        }
+
+        /* */
+        // PCM base64 decoder and WAV player
+        function base64ToArrayBuffer(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate) {
+            const buffer = new ArrayBuffer(44 + pcm16.length * 2);
+            const view = new DataView(buffer);
+
+            const writeString = (view, offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+
+            /* RIFF identifier */
+            writeString(view, 0, 'RIFF');
+            /* file length */
+            view.setUint32(4, 36 + pcm16.length * 2, true);
+            /* RIFF type */
+            writeString(view, 8, 'WAVE');
+            /* format chunk identifier */
+            writeString(view, 12, 'fmt ');
+            /* format chunk length */
+            view.setUint32(16, 16, true);
+            /* sample format (PCM) */
+            view.setUint16(20, 1, true);
+            /* channel count (mono) */
+            view.setUint16(22, 1, true);
+            /* sample rate */
+            view.setUint32(24, sampleRate, true);
+            /* byte rate */
+            view.setUint32(28, sampleRate * 2, true);
+            /* block align */
+            view.setUint16(32, 2, true);
+            /* bits per sample */
+            view.setUint16(34, 16, true);
+            /* data chunk identifier */
+            writeString(view, 36, 'data');
+            /* data chunk length */
+            view.setUint32(40, pcm16.length * 2, true);
+
+            let offset = 44;
+            for (let i = 0; i < pcm16.length; i++, offset += 2) {
+                view.setInt16(offset, pcm16[i], true);
+            }
+
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        // Advanced Voice engine using Google Gemini TTS API
+        async function playTTS(text) {
+            try {
+                // If there's no API key or connection issue, fallback to basic web speech API seamlessly
+                const effectiveKey = getEffectiveApiKey();
+                if (!effectiveKey) {
+                    fallbackLocalTTS(text);
+                    return;
+                }
+
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${effectiveKey}`;
+                const payload = {
+                    contents: [{
+                        parts: [{ text: `Say clearly in a professional, native British/American voice: ${text}` }]
+                    }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: { voiceName: aiVoice }
+                            }
+                        }
+                    },
+                    model: "gemini-2.5-flash-preview-tts"
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('TTS API failed');
+                }
+
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                } else {
+                    fallbackLocalTTS(text);
+                }
+            } catch (error) {
+                console.warn("Gemini TTS Error. Using fallback: ", error);
+                fallbackLocalTTS(text);
+            }
+        }
+
+        function fallbackLocalTTS(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                console.error("Text to speech not supported in this browser.");
+            }
+        }
+
+        /* */
+        let recognition = null;
+        function setSpeakTarget(word) {
+            document.getElementById('target-display').innerText = word;
+            // Clear result box
+            document.getElementById('speech-result-box').classList.add('hidden');
+        }
+
+        function setCustomSpeakTarget() {
+            const inputVal = document.getElementById('custom-speak-word').value.trim();
+            if (inputVal) {
+                setSpeakTarget(inputVal);
+                document.getElementById('custom-speak-word').value = '';
+            }
+        }
+
+        function toggleSpeechRecognition() {
+            const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!Recognition) {
+                alert("Browser Anda tidak mendukung Web Speech API. Silakan coba browser Chrome.");
+                return;
+            }
+
+            const micBtn = document.getElementById('mic-btn');
+            const micIcon = document.getElementById('mic-icon');
+            const micPulse = document.getElementById('mic-pulse');
+            const statusText = document.getElementById('mic-status');
+
+            if (recognition) {
+                recognition.stop();
+                return;
+            }
+
+            recognition = new Recognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = function() {
+                micBtn.classList.remove('from-brand-500', 'to-indigo-600');
+                micBtn.classList.add('bg-red-500');
+                micIcon.className = "fa-solid fa-microphone-slash text-3xl";
+                micPulse.classList.remove('hidden');
+                statusText.innerText = "Mendengarkan... Silakan ucapkan target kata sekarang!";
+            };
+
+            recognition.onend = function() {
+                micBtn.classList.add('from-brand-500', 'to-indigo-600');
+                micBtn.classList.remove('bg-red-500');
+                micIcon.className = "fa-solid fa-microphone text-3xl";
+                micPulse.classList.add('hidden');
+                statusText.innerText = "Ketuk mikrofon untuk mulai berbicara";
+                recognition = null;
+            };
+
+            recognition.onerror = function(event) {
+                statusText.innerText = "Gagal menangkap suara. Silakan coba lagi.";
+                console.error(event.error);
+            };
+
+            recognition.onresult = function(event) {
+                const speechResult = event.results[0][0].transcript;
+                const confidence = event.results[0][0].confidence;
+                evaluateSpeech(speechResult);
+            };
+
+            recognition.start();
+        }
+
+        function evaluateSpeech(heard) {
+            const target = document.getElementById('target-display').innerText.toLowerCase().trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            const cleanHeard = heard.toLowerCase().trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+
+            const resultBox = document.getElementById('speech-result-box');
+            const heardWordEl = document.getElementById('heard-word');
+            const scoreBadge = document.getElementById('speech-score-badge');
+            const feedbackText = document.getElementById('speech-feedback-text');
+
+            heardWordEl.innerText = `"${heard}"`;
+            resultBox.classList.remove('hidden');
+
+            // Simple levenshtein or exact comparison
+            let matchScore = 0;
+            if (cleanHeard === target) {
+                matchScore = 100;
+            } else {
+                // Calculate rough matching
+                let matchingLetters = 0;
+                const minLen = Math.min(cleanHeard.length, target.length);
+                for (let i = 0; i < minLen; i++) {
+                    if (cleanHeard[i] === target[i]) matchingLetters++;
+                }
+                matchScore = Math.round((matchingLetters / Math.max(cleanHeard.length, target.length)) * 100);
+            }
+
+            // Update Speak Stats
+            speakCount++;
+            localStorage.setItem('vocablyx_practice', speakCount);
+            document.getElementById('stat-practice').textContent = speakCount;
+
+            scoreBadge.innerText = `${matchScore}% Match`;
+
+            if (matchScore >= 90) {
+                resultBox.className = "mt-8 w-full max-w-md p-4 rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-200";
+                scoreBadge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500 text-white";
+                feedbackText.innerText = "Sangat Hebat! Pelafalan Anda sempurna.";
+            } else if (matchScore >= 60) {
+                resultBox.className = "mt-8 w-full max-w-md p-4 rounded-xl border border-yellow-200 bg-yellow-50 dark:bg-yellow-950/20 text-yellow-800 dark:text-yellow-200";
+                scoreBadge.className = "px-3 py-1 rounded-full text-xs font-bold bg-yellow-500 text-white";
+                feedbackText.innerText = "Cukup bagus! Sedikit latihan lagi agar lebih mulus.";
+            } else {
+                resultBox.className = "mt-8 w-full max-w-md p-4 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-200";
+                scoreBadge.className = "px-3 py-1 rounded-full text-xs font-bold bg-red-500 text-white";
+                feedbackText.innerText = "Pelafalan kurang sesuai. Dengarkan contoh suara AI.";
+            }
+        }
+
+        /* */
+        async function generateCustomVocabulary() {
+            const topic = document.getElementById('ai-topic-input').value.trim();
+            if (!topic) {
+                alert(appLanguage === 'id' ? 'Tolong masukkan topik pelajaran terlebih dahulu.' : 'Please enter a learning topic first.');
+                return;
+            }
+
+            const container = document.getElementById('ai-vocab-container');
+            const loading = document.getElementById('ai-vocab-loading');
+            const btnSpinner = document.getElementById('ai-gen-spinner');
+
+            container.innerHTML = '';
+            loading.classList.remove('hidden');
+            btnSpinner.classList.remove('hidden');
+
+            try {
+                const effectiveKey = getEffectiveApiKey();
+                const systemPrompt = `Bertindaklah sebagai pembuat konten kurikulum bahasa Inggris profesional di Vocablyx untuk level ${learningLevel}. Hasilkan konten dalam format JSON murni tanpa ada penjelasan lain ataupun tanda markdown (seperti \`\`\`json). Jangan berikan teks lain di luar array JSON.`;
+                const userQuery = `Buat daftar array berisi 5 kosakata bahasa Inggris tingkat ${learningLevel} yang paling sering dipakai terkait topik: "${topic}". Setiap item harus berformat JSON yang memiliki properti 'word' (Bahasa Inggris), 'meaning' (Arti Bahasa Indonesia jika aplikasi disetel ke 'id' atau arti dalam bahasa Inggris jika disetel ke 'en'), dan 'example' (Contoh kalimat bahasa Inggris). Pastikan JSON valid.`;
+
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${effectiveKey}`;
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "ARRAY",
+                            items: {
+                                type: "OBJECT",
+                                properties: {
+                                    word: { type: "STRING" },
+                                    meaning: { type: "STRING" },
+                                    example: { type: "STRING" }
+                                },
+                                required: ["word", "meaning", "example"]
+                            }
+                        }
+                    },
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal menghubungi API');
+                }
+
+                const result = await response.json();
+                const jsonText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                const vocabArray = JSON.parse(jsonText);
+
+                if (Array.isArray(vocabArray) && vocabArray.length > 0) {
+                    vocabArray.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = "flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 gap-3 hover:translate-x-1 transition duration-200";
+                        card.innerHTML = `
+                            <div>
+                                <span class="text-xs text-indigo-500 font-bold uppercase tracking-wide">${appLanguage === 'id' ? 'Topik' : 'Topic'}: ${topic} (${learningLevel})</span>
+                                <div class="font-bold text-slate-800 dark:text-white text-lg">${item.word}</div>
+                                <div class="text-sm text-slate-600 dark:text-slate-400 font-semibold">${item.meaning}</div>
+                                <div class="text-xs text-slate-400 dark:text-slate-500 italic mt-1">"${item.example}"</div>
+                            </div>
+                            <button onclick="playTTS('${item.word.replace(/'/g, "\\'")}')" class="p-3 bg-white dark:bg-slate-800 text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 rounded-full shadow-sm self-end sm:self-center shrink-0 hover:scale-105 active:scale-95 transition" title="Dengarkan pelafalan">
+                                <i class="fa-solid fa-volume-high text-lg"></i>
+                            </button>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    throw new Error("Format data tidak sesuai");
+                }
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500 border border-red-200 bg-red-50 dark:bg-red-950/20 rounded-xl">
+                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+                        <p class="text-sm font-semibold">${appLanguage === 'id' ? 'Gagal mengenerate kosakata AI. Harap periksa jaringan Anda atau coba gunakan topik yang berbeda.' : 'Failed to generate AI vocabulary. Please check your connection or try a different topic.'}</p>
+                    </div>
+                `;
+            } finally {
+                loading.classList.add('hidden');
+                btnSpinner.classList.add('hidden');
+            }
+        }
+
+        /* */
+        function loadQuestion() {
+            selectedOptionThisQuestion = false;
+            document.getElementById('btn-next').classList.add('hidden');
+
+            const currentQuestion = quizData[currentQuestionIndex];
+            
+            // Update Teks Soal & Progress
+            document.getElementById('question-counter').textContent = `Soal ${currentQuestionIndex + 1} dari ${quizData.length}`;
+            document.getElementById('question-text').textContent = currentQuestion.question;
+            
+            const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+            document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
+
+            // Muat Pilihan Jawaban
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            currentQuestion.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-option w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-left font-medium text-slate-700 dark:text-slate-200 flex justify-between items-center transition duration-200";
+                btn.innerHTML = `<span>${option}</span><i class="fa-regular fa-circle text-slate-300 dark:text-slate-600"></i>`;
+                btn.onclick = () => selectAnswer(btn, index);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(button, index) {
+            if (selectedOptionThisQuestion) return; // Stop double-clicking
+            selectedOptionThisQuestion = true;
+
+            const currentQuestion = quizData[currentQuestionIndex];
+            const options = document.querySelectorAll('.quiz-option');
+
+            if (index === currentQuestion.correct) {
+                button.className = "quiz-option w-full p-4 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-200 text-left font-semibold flex justify-between items-center transition duration-200";
+                button.querySelector('i').className = "fa-solid fa-circle-check text-emerald-500 text-lg";
+                score += 20; // 5 questions * 20 = 100 max
+            } else {
+                button.className = "quiz-option w-full p-4 rounded-xl border border-red-500 bg-red-50 dark:bg-red-950/30 text-red-800 dark:text-red-200 text-left font-semibold flex justify-between items-center transition duration-200";
+                button.querySelector('i').className = "fa-solid fa-circle-xmark text-red-500 text-lg";
+                
+                // Show Correct Answer
+                const correctBtn = options[currentQuestion.correct];
+                correctBtn.className = "quiz-option w-full p-4 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-200 text-left font-semibold flex justify-between items-center transition duration-200";
+                correctBtn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-500 text-lg";
+            }
+
+            document.getElementById('btn-next').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-progress').style.width = '100%';
+            document.getElementById('quiz-active-area').classList.add('hidden');
+            document.getElementById('quiz-result-area').classList.remove('hidden');
+
+            const finalScoreElement = document.getElementById('final-score');
+            finalScoreElement.textContent = score;
+
+            // Feedback based on performance
+            const feedbackElement = document.getElementById('result-feedback');
+            if (score === 100) {
+                feedbackElement.innerHTML = "🏆 <strong>Luar Biasa!</strong> Jawabanmu benar semua. Kemampuan bahasa Inggrismu hebat sekali!";
+            } else if (score >= 60) {
+                feedbackElement.innerHTML = "👍 <strong>Kerja Bagus!</strong> Kamu sudah memahami dasar-dasar modul ini dengan baik.";
+            } else {
+                feedbackElement.innerHTML = "📚 <strong>Jangan Menyerah!</strong> Yuk baca modul belajarnya lagi dan coba kuis ini sekali lagi.";
+            }
+
+            // Update Highscore
+            if (score > highestScore) {
+                highestScore = score;
+                localStorage.setItem('vocablyx_highscore', highestScore);
+                document.getElementById('stat-high-score').textContent = highestScore;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('quiz-active-area').classList.remove('hidden');
+            document.getElementById('quiz-result-area').classList.add('hidden');
+            loadQuestion();
+        }
+
+        /* */
+        function loadScrambleGame() {
+            currentScrambleWordObj = scrambleWords[currentScrambleIndex];
+            document.getElementById('scramble-clue').innerText = currentScrambleWordObj.clue;
+            document.getElementById('scramble-input').value = "";
+            document.getElementById('scramble-feedback-box').classList.add('hidden');
+
+            // Shuffle letters
+            const originalWord = currentScrambleWordObj.word;
+            let shuffled = originalWord.split('').sort(() => 0.5 - Math.random()).join('');
+            
+            // Guard in case shuffled equals original
+            while(shuffled === originalWord) {
+                shuffled = originalWord.split('').sort(() => 0.5 - Math.random()).join('');
+            }
+            shuffledWord = shuffled;
+
+            // Render letters as tap targets
+            const container = document.getElementById('scramble-letters-container');
+            container.innerHTML = "";
+            shuffled.split('').forEach(letter => {
+                const span = document.createElement('button');
+                span.className = "w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white dark:bg-slate-800 hover:bg-brand-500 hover:text-white dark:hover:bg-brand-600 transition font-extrabold text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm text-base md:text-lg active:scale-95";
+                span.innerText = letter;
+                span.onclick = () => {
+                    const inp = document.getElementById('scramble-input');
+                    inp.value += letter;
+                    span.disabled = true;
+                    span.classList.add('opacity-40');
+                };
+                container.appendChild(span);
+            });
+        }
+
+        function resetScrambleAnswer() {
+            document.getElementById('scramble-input').value = "";
+            document.querySelectorAll('#scramble-letters-container button').forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('opacity-40');
+            });
+        }
+
+        function checkScrambleAnswer() {
+            const userInp = document.getElementById('scramble-input').value.trim().toUpperCase();
+            const correctWord = currentScrambleWordObj.word;
+            const feedback = document.getElementById('scramble-feedback-box');
+
+            feedback.classList.remove('hidden');
+            if (userInp === correctWord) {
+                feedback.className = "mt-6 text-center text-sm font-bold text-emerald-600 dark:text-emerald-400";
+                feedback.innerHTML = `🎉 Hebat! Jawaban Benar: <strong>${correctWord}</strong>`;
+                
+                // Add Score/streak indicator slightly
+                streak++;
+                localStorage.setItem('vocablyx_streak', streak);
+                document.getElementById('stat-streak').textContent = streak;
+
+                // Move forward after 2s
+                setTimeout(() => {
+                    currentScrambleIndex = (currentScrambleIndex + 1) % scrambleWords.length;
+                    loadScrambleGame();
+                }, 2000);
+            } else {
+                feedback.className = "mt-6 text-center text-sm font-bold text-red-500";
+                feedback.innerHTML = `❌ Ops, belum pas! Coba susun ulang lagi.`;
+            }
+        }
+
+        /* */
+        async function sendMessageToVoxy() {
+            const input = document.getElementById('chat-input');
+            const messageText = input.value.trim();
+            if (!messageText) return;
+
+            // Render User message
+            const chatMessages = document.getElementById('chat-messages');
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = "flex items-start justify-end gap-2 max-w-[85%] ml-auto";
+            userMessageDiv.innerHTML = `
+                <div class="bg-brand-500 text-white p-3 rounded-2xl text-sm leading-relaxed shadow-sm">
+                    ${messageText}
+                </div>
+            `;
+            chatMessages.appendChild(userMessageDiv);
+            input.value = "";
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Render Bot typing indicator
+            const botTypingDiv = document.createElement('div');
+            botTypingDiv.className = "flex items-start gap-2 max-w-[85%] animate-pulse";
+            botTypingDiv.innerHTML = `
+                <div class="w-8 h-8 bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-300 rounded-lg flex items-center justify-center text-sm shrink-0">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="bg-slate-100 dark:bg-slate-900 p-3 rounded-2xl text-sm italic text-slate-400">
+                    ${appLanguage === 'id' ? 'Voxy sedang memikirkan jawaban...' : 'Voxy is thinking...'}
+                </div>
+            `;
+            chatMessages.appendChild(botTypingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Push to history
+            voxyChatHistory.push({ role: "user", parts: [{ text: messageText }] });
+
+            try {
+                const effectiveKey = getEffectiveApiKey();
+                if (!effectiveKey) {
+                    throw new Error("No API key configured.");
+                }
+
+                const systemPrompt = `Anda adalah Voxy, asisten tutor bahasa Inggris interaktif yang cerdas di platform Vocablyx. Saat ini pengguna sedang belajar di level ${learningLevel}. Tanggapi pengguna dalam ${appLanguage === 'id' ? 'Bahasa Indonesia yang dicampur dengan bahasa Inggris edukatif agar interaktif' : 'Bahasa Inggris yang ramah dan koreksi ejaan atau grammarnya jika ada yang salah'}. Jaga agar tanggapan Anda padat, informatif, dan mendidik (maksimum 2 paragraf singkat).`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${effectiveKey}`;
+                
+                const payload = {
+                    contents: voxyChatHistory,
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const result = await response.json();
+                const voxyResponse = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Maaf, aku sedang mengalami kendala jaringan. Yuk dicoba lagi.";
+
+                // Remove typing indicator
+                chatMessages.removeChild(botTypingDiv);
+
+                // Add to chat history (save turn)
+                voxyChatHistory.push({ role: "model", parts: [{ text: voxyResponse }] });
+
+                // Render Bot Response with Play Speech button!
+                const botResponseDiv = document.createElement('div');
+                botResponseDiv.className = "flex items-start gap-2 max-w-[85%]";
+                botResponseDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-300 rounded-lg flex items-center justify-center text-sm shrink-0">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <div class="bg-slate-100 dark:bg-slate-900 p-3 rounded-2xl text-sm leading-relaxed text-slate-800 dark:text-slate-200">
+                            ${voxyResponse.replace(/\n/g, '<br>')}
+                        </div>
+                        <button onclick="playTTS('${voxyResponse.replace(/[#*`']/g, "").replace(/\n/g, " ").replace(/'/g, "\\'")}')" class="text-xs font-bold text-brand-500 hover:underline flex items-center gap-1 self-start ml-2 mt-1">
+                            <i class="fa-solid fa-volume-high"></i> <span data-i18n="listen_voxy">${appLanguage === 'id' ? 'Dengarkan Suara Voxy' : 'Listen to Voxy'}</span>
+                        </button>
+                    </div>
+                `;
+                chatMessages.appendChild(botResponseDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch (error) {
+                console.error(error);
+                chatMessages.removeChild(botTypingDiv);
+                
+                const errorDiv = document.createElement('div');
+                errorDiv.className = "flex items-start gap-2 max-w-[85%]";
+                errorDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-300 rounded-lg flex items-center justify-center text-sm shrink-0">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-red-50 dark:bg-red-950/20 text-red-500 p-3 rounded-2xl text-sm">
+                        ${appLanguage === 'id' ? 'Maaf, aku butuh sambungan internet penuh dan API key valid untuk mengobrol lebih jauh. Tetapi kamu bisa menggunakan menu lainnya!' : 'Sorry, I need a valid internet connection and API key to chat. But you can still use the other modules!'}
+                    </div>
+                `;
+                chatMessages.appendChild(errorDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessageToVoxy();
+            }
+        }
+
+        function clearChatHistory() {
+            voxyChatHistory = [];
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = `
+                <div class="flex items-start gap-2 max-w-[85%]">
+                    <div class="w-8 h-8 bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-300 rounded-lg flex items-center justify-center text-sm shrink-0">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-900 p-3 rounded-2xl text-sm leading-relaxed text-slate-800 dark:text-slate-200">
+                        ${appLanguage === 'id' ? 'Chat dibersihkan! Halo lagi, ada materi bahasa Inggris yang ingin kamu tanyakan sekarang?' : 'Chat cleared! Hello again, do you have any English questions for me today?'}
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
